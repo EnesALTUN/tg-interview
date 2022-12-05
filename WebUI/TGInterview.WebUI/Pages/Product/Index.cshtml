@@ -1,0 +1,68 @@
+﻿@page
+@model TGInterview.WebUI.Pages.Product.IndexModel
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<div id="product-list" class="row" style="margin: 0; background: #fcdec4;">
+    <div id="products-loading-spinner" class="spinner-border text-secondary m-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="product-item d-none col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="product-block">
+            <div class="product-image">
+                <img src="" alt="" />
+            </div>
+            <div class="product-info">
+                <div class="product-category"></div>
+                <div class="product-name"></div>
+                <div class="product-price"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window.onload = async function() {
+            await fetch("/product?handler=allProducts")
+                .then(response => response.json())
+                .then(response => {
+                    const spinner = document.getElementById("products-loading-spinner");
+
+                    const productListElement = document.getElementById("product-list");
+                    const productItemElement = document.getElementsByClassName("product-item")[0];
+
+                    response.data.forEach(productItem => {
+                        const productItemClone = productItemElement.cloneNode(true);
+
+                        productItemClone.classList.remove("d-none");
+
+                        const productItemBlock = productItemClone.getElementsByClassName("product-block")[0];
+
+                        const productImage = productItemBlock.getElementsByClassName("product-image")[0];
+                        productImage.getElementsByTagName("img")[0].setAttribute("src", productItem.imagePath);
+
+                        const productCategory = productItemBlock.getElementsByClassName("product-category")[0];
+                        productCategory.innerHTML = `<span>${productItem.categoryName}</span>`;
+
+                        const productName = productItemBlock.getElementsByClassName("product-name")[0];
+                        productName.innerHTML = `<b>${productItem.name}</b>`;
+
+                        const productPrice = productItemBlock.getElementsByClassName("product-price")[0];
+                        productPrice.innerHTML = `<b>${currencyFormatter.format(productItem.price)}</b>`;
+
+                        productListElement.appendChild(productItemClone);
+                    })
+
+                    productItemElement.remove();
+                    spinner.remove();
+                })
+                .catch(err => console.log({ err }));
+        }
+    </script>
+}
+
+@section Headers {
+    <link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
+}
