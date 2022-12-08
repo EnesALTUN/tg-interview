@@ -42,6 +42,20 @@ public async Task<JsonResult> OnGetAllProducts()
 | WebUI            | 7120        | 5120      |
 | Product Service  | 7020        | 5020      |
 
+## Defining The ProductDbConnection Connection Clause In User-Secret
+1) First, go to the API project on the command line. 
+```
+  TGInterview > ProductService > Presentation > TGInterview.ProductService.Api
+```
+2) Creating user-secrets
+```
+  dotnet user-secrets init
+```
+3) Setted user-secrets
+```
+  dotnet user-secrets set ProductSqlConnection "Data Source=<IP Number or locahost>,<PORT_NUMBER>;Initial Catalog=<DB_NAME>;User Id=<DB_USERNAME>;Password=<DB_PASSWORD>;Integrated Security=False"
+```
+
 ## Product Service Migration
 Before the product service can run, the database must be created. For this process, we need to create a migration. Since seed data is defined in EntityFramework configurations, the database will be created full. You can follow the steps below to create a migration:
 
