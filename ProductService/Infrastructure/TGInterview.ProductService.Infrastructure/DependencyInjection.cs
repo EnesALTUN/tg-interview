@@ -12,7 +12,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ProductDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("ProductSqlConnection"), mig => mig.MigrationsAssembly("TGInterview.ProductService.Api")));
+            options.UseSqlServer(configuration.GetValue<string>("ProductSqlConnection"), mig => mig.MigrationsAssembly("TGInterview.ProductService.Api")));
 
         services.AddUnitOfWork<ProductDbContext>();
 

@@ -3,6 +3,10 @@ using TGInterview.ProductService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+IConfigurationRoot configuration = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
