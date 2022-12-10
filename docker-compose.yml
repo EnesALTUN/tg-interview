@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  tginterview.productservice.api:
+    container_name: tginterview_productservice
+    image: ${DOCKER_REGISTRY-}tginterview/productserviceapi
+    build:
+      context: .
+      dockerfile: ProductService/Presentation/TGInterview.ProductService.Api/Dockerfile
+
+  tginterview.webui:
+    container_name: tginterview_webui
+    image: ${DOCKER_REGISTRY-}tginterview/webui
+    build:
+      context: .
+      dockerfile: WebUI/TGInterview.WebUI/Dockerfile
+
+  tginterview_sqlserver:
+    container_name: tginterview_mssql
+    image: mcr.microsoft.com/mssql/server:2019-latest

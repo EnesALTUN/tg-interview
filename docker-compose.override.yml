@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  tginterview.productservice.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5020
+      - ProductSqlConnection=Data Source=tginterview_sqlserver;Initial Catalog=TGInterviewProductDb;User Id=sa;Password=TGInterviewSqlMaxLevel(!)Password;Integrated Security=False
+    ports:
+      - "5020:5020"
+    networks:
+      - net_backendservices
+      - sql_db
+      - net_frontend
+    depends_on:
+      - tginterview_sqlserver
+
+  tginterview.webui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5120
+    ports:
+      - "5120:5120"
+    networks:
+      - net_frontend
+
+  tginterview_sqlserver:
+    user: root
+    ports:
+      - 1453:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=TGInterviewSqlMaxLevel(!)Password
+    volumes:
+      - sqlserver_data:/var/opt/mssql/data
+      - sqlserver_log:/var/opt/mssql/log
+    networks:
+      - sql_db
+
+networks:
+  net_backendservices:
+    driver: bridge
+    external: true
+  net_frontend:
+    driver: bridge
+    external: true
+  sql_db:
+    driver: bridge
+    external: true
+
+volumes:
+  sqlserver_data:
+  sqlserver_log:

@@ -1,3 +1,4 @@
+using TGInterview.ProductService.Api.Extensions;
 using TGInterview.ProductService.Application;
 using TGInterview.ProductService.Infrastructure;
 
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 IConfigurationRoot configuration = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
+    .AddEnvironmentVariables()
     .Build();
 
 // Add services to the container.
@@ -20,6 +22,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+app.ApplyMigration();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
